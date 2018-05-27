@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>My Cool Shop</title>
+  <link rel="stylesheet" href="../css/bootstrap.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <script src="../js/moment.min.js"></script>
+  <script src="../js/angular.js" charset="utf-8"></script>
+  <script src="../js/route.js"></script>
+  <script src="../js/ngStorage.js"></script>
+  <script src="../js/app.js" charset="utf-8"></script>
+  <script src="../js/jquery.js" charset="utf-8"></script>
+  <script src="../js/bootstrap.bundle.js" charset="utf-8"></script>
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+      <style>
+        .spanNav{
+          background: linear-gradient(white, gray);
+          color: white;
+          padding: 2px 5px;
+        }
+      </style>
+</head>
+
+<body ng-app="app" ng-controller="ApiController">
+  <nav class="navbar navbar-expand-lg navbar-light sticky-top bg-light">
+    <a class="navbar-brand display-4" href="#">
+      <span class="spanNav">MyCoolShop</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#!">Shop<span class="sr-only">(current)</span></a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="post.html">POST</a>
+        </li> -->
+      </ul>
+      <ul class="navbar-nav right">
+        <li class="nav-item">
+          <a href="" data-target="#modal_cart" data-toggle="modal" class="nav-link">
+            <span class="material-icons">shopping_cart</span>
+            <span class="badge badge-secondary">{{cart_number}}</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <input type="text" class="form-control mr-sm-2" placeholder="Search...">
+        </li>
+        <li class="nav-item">
+          <a ng-if="!user_status" href="#!/login" class="nav-link">Log in/Sign up
+          </a>
+        </li>
+        <li class="nav-item dropdown">
+          <a ng-if="user_status" href="" class="nav-link dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+            {{user_status}}
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" data-toggle="dropdown">
+            <a class="dropdown-header">Welcome, {{user_status}}</a>
+            <div class="dropdown-divider"></div>          
+            <a href="" class="dropdown-item" ng-click="gotoUserHome();" >My account</a>          
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="" ng-click="logout();">Log out</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="fixed-bottom sticky-bottom">
+    <div class="alert fade show {{alert.type}}" ng-if="alert.show" role="alert">
+      {{alert.message}}
+    </div>
+  </div>
+
+  <ng-view  onload="" autoscroll="true"></ng-view>
+
+  <!-- Modal for more Info -->
+<div id="modal_cart" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="material-icons">shopping_cart</i> Your cart</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>These are items in your cart:</p>
+        <div>
+          <table class="table table-bordered">
+            <thead>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price per product</th>
+              <th>Total</th>
+              <th>Action</th>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in cart_items">
+                <td>{{item.name}} </td>
+                <td>{{item.quantity}} </td>
+                <td>{{item.price | currency}} </td>
+                <td>{{item.price*item.quantity | currency}} </td>
+                <td style="text-align: center">
+                  <a style="color: red" href="" ng-click="removeCartItem(item)" class="btn btn-link">
+                    <span class="material-icons">delete</span>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="float-right">
+          <p class="lead">Total: <strong>{{cart_money | currency}}</strong></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button ng-if="cart_number!=0" type="button" class="btn btn-primary" data-dismiss="modal" ng-click="checkout()">Checkout</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>
